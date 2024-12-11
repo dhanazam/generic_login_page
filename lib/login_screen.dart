@@ -6,8 +6,7 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState
-    ();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
@@ -154,39 +153,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      isEmailCorrect
-                          ? ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                              ),
-                              backgroundColor: isEmailCorrect == false
-                                  ? Colors.red
-                                  : Colors.purple,
-                              padding: const EdgeInsets.symmetric(horizontal: 131, vertical: 20)
-                          ),
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Processing Data'),
-                                ),
-                              );
-                            }
-                          },
-                          child: const Text(
-                            'Log In',
-                            style: TextStyle(fontSize: 17),
-                          ))
-                          : Container(),
                     ],
                   ),
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 40,
                 ),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -198,7 +169,22 @@ class _LoginScreenState extends State<LoginScreen> {
                             horizontal: MediaQuery.of(context).size.width / 3.3,
                             vertical: 20)
                         ),
-                    onPressed: () {},
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        FocusScope.of(context).unfocus();
+
+                        if (!isEmail(_textEditingController.text)) { // Check email format
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Incorrect email format')),
+                          );
+                          return;
+                        }
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Processing Data')),
+                        );
+                      }
+                    },
                     child: const Text(
                       'Sign In',
                       style: TextStyle(
